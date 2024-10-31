@@ -1,0 +1,34 @@
+#include <cmath>
+#include <iostream>
+#include <chrono>
+
+double calculate_pi(int num_intervals) {
+    double sum = 0.0;
+    double step = 1.0 / num_intervals;
+
+    for (int i = 0; i < num_intervals; i++) {
+        double x = (i + 0.5) * step;
+        sum += std::sin(x);
+    }
+
+    return 4 * sum * step;
+}
+
+int main() {
+    int intervals[] = {1000000, 5000000, 100000000}; // Три значения интервалов
+
+    for (int i = 0; i < 3; i++) {
+        int current_intervals = intervals[i];
+
+        auto start = std::chrono::high_resolution_clock::now(); // Начало отсчета времени
+        double pi = calculate_pi(current_intervals);
+        auto end = std::chrono::high_resolution_clock::now(); // Конец отсчета времени
+
+        std::chrono::duration<double> elapsed = end - start; // Вычисление времени выполнения
+        std::cout << "Intervals: " << current_intervals 
+                  << ", Calculated Pi: " << pi 
+                  << ", Time: " << elapsed.count() << " seconds" << std::endl;
+    }
+
+    return 0;
+}
